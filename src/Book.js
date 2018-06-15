@@ -1,19 +1,44 @@
 import React, { Component } from 'react'
 
 class Book extends Component {
-  render () {
-    let authors;
-    for (let author of this.props.book.authors) {
-      authors ? authors = authors + ', ' + author : authors = author;
+
+
+  onChangeFunc = (evt) => {
+    this.props.shelfChange(evt.target.value, this.props.book);
+  }
+
+  renderSearchPage = () => {
+    if(this.props.search) {
+      let bookObj = this.props.booksInShelf.find((book) => book.id === this.props.book.id);
+      if (bookObj) {
+        let shelfStr = bookObj.shelf.split(/(?=[A-Z])/).join(' ');
+        shelfStr = shelfStr[0].toUpperCase() + shelfStr.substring(1);
+        return (
+          <div className="book-authors">Currently in Shelf: { shelfStr }</div>
+        )
+      }
     }
+  }
+
+  render () {
+    let authors = '';
+    if(this.props.book.authors) {
+      for (let author of this.props.book.authors) {
+        authors ? authors = authors + ', ' + author : authors = author;
+      }
+    }
+
+    let imgLink;
+    this.props.book.imageLinks? imgLink = this.props.book.imageLinks.thumbnail : imgLink = '';
     return (
       <li>
         <div className="book">
           <div className="book-top">
-            <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url("${this.props.book.imageLinks.thumbnail}")` }}></div>
+            <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url("${imgLink}")` }}></div>
             <div className="book-shelf-changer">
-              <select>
+              <select onChange={(evt) => this.onChangeFunc(evt)}>
                 <option value="move" disabled>Move to...</option>
+                <option className="hidden"></option>
                 <option value="currentlyReading">Currently Reading</option>
                 <option value="wantToRead">Want to Read</option>
                 <option value="read">Read</option>
@@ -23,6 +48,7 @@ class Book extends Component {
           </div>
           <div className="book-title">{ this.props.book.title }</div>
           <div className="book-authors">{ authors }</div>
+          { this.renderSearchPage() }
         </div>
       </li>
     )

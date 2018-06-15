@@ -13,6 +13,8 @@ class BookShelf extends Component {
               this.props.data.filter(book => book.shelf === this.props.shelfId).map((bookData) => {
                 return (<Book
                 book = { bookData }
+                shelfChange = {this.props.shelfChange}
+                key = {bookData.id}
                 />)
               })
             }
