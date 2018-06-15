@@ -7,6 +7,8 @@ class Book extends Component {
     this.props.shelfChange(evt.target.value, this.props.book);
   }
 
+
+  //A Helper function to decide if the Book is actually on the front Page or on the Search Page
   renderSearchPage = () => {
     if(this.props.search) {
       let bookObj = this.props.booksInShelf.find((book) => book.id === this.props.book.id);
