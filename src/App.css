@@ -176,3 +176,12 @@ body, .app {
   text-align: center;
   font-size: 0.8em;
 }
+
+/*Error Page*/
+
+.error-page {
+  height: 100vh;
+  width: 100vw;
+  background: url('./icons/404.svg');
+  background-repeat: no-repeat;
+}

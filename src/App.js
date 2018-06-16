@@ -1,8 +1,9 @@
 import React from 'react'
 import * as BooksAPI from './BooksAPI'
 import BookShelf from './BookShelf'
-import { Route, Link } from 'react-router-dom'
+import { Route, Link, Switch } from 'react-router-dom'
 import SearchBooks from './SearchBooks'
+import errorPage from './404'
 // import * as BooksAPI from './BooksAPI'
 import './App.css'
 
@@ -47,36 +48,40 @@ class BooksApp extends React.Component {
   render() {
     return (
       <div className="app">
-        <Route exact path="/" render={() => (
-          <div className="list-books">
-            <div className="list-books-title">
-              <h1>MyReads</h1>
-            </div>
-            <div className="list-books-content">
-              <div>
-                {
-                  this.state.allShelfs.map(shelf => {
-                  return  (<BookShelf
-                    shelfName = { shelf.name }
-                    shelfId = { shelf.id }
-                    data = {this.state.allData}
-                    shelfChange = {this.changeShelf}
-                    key = {shelf.name}
-                    />)
-                  })
-                }
+        <Switch>
+          <Route exact path="/" render={() => (
+            <div className="list-books">
+              <div className="list-books-title">
+                <h1>MyReads</h1>
+              </div>
+              <div className="list-books-content">
+                <div>
+                  {
+                    this.state.allShelfs.map(shelf => {
+                    return  (<BookShelf
+                      shelfName = { shelf.name }
+                      shelfId = { shelf.id }
+                      data = {this.state.allData}
+                      shelfChange = {this.changeShelf}
+                      key = {shelf.name}
+                      />)
+                    })
+                  }
+                </div>
+              </div>
+              <div className="open-search">
+                <Link to='/search'>Add a book</Link>
               </div>
             </div>
-            <div className="open-search">
-              <Link to='/search'>Add a book</Link>
-            </div>
-          </div>
-        )}/>
-      <Route exact path="/search" render={() => (
-            <SearchBooks shelfChange = {this.changeShelf}
-                         booksInShelf = {this.state.allData}/>
-            )}/>
-          </div>
+          )}/>
+        <Route exact path="/search" render={() => (
+              <SearchBooks shelfChange = {this.changeShelf}
+                           booksInShelf = {this.state.allData}/>
+              )}/>
+            <Route component={errorPage}/>
+        </Switch>
+    </div>
+
         )}
   }
 

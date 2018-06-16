@@ -22,6 +22,21 @@ class Book extends Component {
     }
   }
 
+  //A Function to get the correct shelf the book is inspect
+  getShelfOfBook = () => {
+    if(this.props.search) {
+      let bookObj = this.props.booksInShelf.find((book) => book.id === this.props.book.id);
+      if (bookObj) {
+        return bookObj.shelf;
+      }
+      else {
+        return 'none';
+      }
+    }
+
+    return this.props.book.shelf;
+  }
+
   render () {
     let authors = '';
     if(this.props.book.authors) {
@@ -41,10 +56,10 @@ class Book extends Component {
               <select onChange={(evt) => this.onChangeFunc(evt)}>
                 <option value="move" disabled>Move to...</option>
                 <option className="hidden"></option>
-                <option value="currentlyReading">Currently Reading</option>
-                <option value="wantToRead">Want to Read</option>
-                <option value="read">Read</option>
-                <option value="none">None</option>
+                <option value="currentlyReading" selected={this.getShelfOfBook() === "currentlyReading"}>Currently Reading</option>
+                <option value="wantToRead" selected={this.getShelfOfBook() === "wantToRead"}>Want to Read</option>
+                <option value="read" selected={this.getShelfOfBook() === "read"}>Read</option>
+                <option value="none" selected={this.getShelfOfBook() === "none"}>None</option>
               </select>
             </div>
           </div>
